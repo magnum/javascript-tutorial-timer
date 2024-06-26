@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>test</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+  <style>
+    main {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .timer {
+      font-size: 10vw;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="timer">timer</div>
+  </main>
+
+  <script>
+    const defaultUntilStr = '2024-06-28T19:00:00';
+    // check if there is a querystring parameter datetime
+    const urlParams = new URLSearchParams(window.location.search);
+    const untilStr = urlParams.get('until');
+    if(!untilStr) {
+      // if not, redirect to the same page with datetime querystring parameter
+      window.location = window.location + '?until=' + defaultUntilStr;
+    }
+    const timer = document.querySelector('.timer');
+    const until = new Date(untilStr);
+    // show difference between now and until as hh:mm:ss
+    const diffText = () => {
+      const now = new Date();
+      const diff = new Date(until - now);
+      const dd = diff.getUTCDate() - 1;
+      const hh = diff.getUTCHours().toString().padStart(2, '0');
+      const mm = diff.getUTCMinutes().toString().padStart(2, '0');
+      const ss = diff.getUTCSeconds().toString().padStart(2, '0');
+      timer.textContent = `${dd}d ${hh}h ${mm}m ${ss}s`;
+    };
+    diffText();
+    setInterval(diffText, 1000);
+  </script>
+</body>
+</html>
